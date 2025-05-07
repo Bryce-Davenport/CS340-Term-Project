@@ -1,3 +1,19 @@
 # Adding my DB login as a text file and will ignore it
 
+# Node dependencies
+node_modules/
+
+# Environment files and secrets
+.env
 login.txt
+
+# MySQL Workbench autosaves/backups
+*.mwb~
+*.bak
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
