@@ -157,31 +157,26 @@ VALUES (
 
 INSERT INTO OrderItems (
     quantity,
-    itemPrice,
     Orders_orderID,
     Products_productID
 )
 VALUES (
     1,
-    999.99,
     1,
     101
 ),
 (
     2,
-    59.99,
     2,
     104
 ),
 (
     1,
-    749.99,
     2,
     102
 ),
 (
     1,
-    139.99,
     3,
     105
 );
