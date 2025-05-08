@@ -70,7 +70,6 @@ CREATE Table Products (
 CREATE Table OrderItems (
   orderItemID INT NOT NULL AUTO_INCREMENT,
   quantity INT NOT NULL,
-  itemPrice DECIMAL(10,2) NOT NULL,
   Orders_orderID INT NOT NULL,
   Products_productID INT NOT NULL,
   PRIMARY KEY (orderItemID),

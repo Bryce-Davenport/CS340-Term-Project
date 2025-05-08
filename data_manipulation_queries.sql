@@ -76,8 +76,8 @@ JOIN Products p ON oi.Products_productID = p.productID
 WHERE oi.Orders_orderID = @order_id;
 
 -- Insert product into order
-INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity, itemPrice)
-VALUES (@order_id, @product_id, @quantity, @item_price);
+INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity)
+VALUES (@order_id, @product_id, @quantity);
 
 -- Update quantity of product in an order
 UPDATE OrderItems
