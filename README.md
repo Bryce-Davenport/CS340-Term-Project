@@ -8,9 +8,10 @@ This repository hosts Bryce Davenport and Jack Armstrong's CS340 Term Project: C
 ![Simple ERD Diagram](/Diagrams/PS2_ERD.png)
 
 ### Schema:
-![Database Schema](/Diagrams/PS2_Schema.png)
+![Database Schema](/Diagrams/PS3_Schema.png)
 
 ### File Structure:
+```
 CS340-Term-Project/
 - backend/                # Node.js backend
 - frontend/               # Web UI files
@@ -22,4 +23,4 @@ CS340-Term-Project/
 - DDL.sql                 # Database schema + sample data
 - backup_DDL_dump.sql     # Full schema+data backup
 - README.md               # Project notes/documentation
-
+```
