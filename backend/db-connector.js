@@ -1,4 +1,4 @@
-// Get an instance of mysql we can use in the app
+// Get an instance of mysql
 let mysql = require('mysql2')
 
 // Create a 'connection pool' using the provided credentials
