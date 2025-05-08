@@ -6,20 +6,20 @@
 SELECT * FROM Customers;
 
 -- View customer by ID
-SELECT * FROM Customers WHERE customer_id = @customer_id;
+SELECT * FROM Customers WHERE customerID = @customer_id;
 
 -- Insert a new customer
-INSERT INTO Customers (first_name, last_name, email, phone)
-VALUES (@first_name, @last_name, @email, @phone);
+INSERT INTO Customers (email, streetAddress, phoneNumber)
+VALUES (@email, @streetAddress, @phoneNumber);
 
 -- Update customer phone and email
 UPDATE Customers
-SET phone = @new_phone,
+SET phoneNumber = @new_phone,
     email = @new_email
-WHERE customer_id = @customer_id;
+WHERE customerID = @customer_id;
 
 -- Delete a customer
-DELETE FROM Customers WHERE customer_id = @customer_id;
+DELETE FROM Customers WHERE customerID = @customer_id;
 
 
 -- PRODUCTS
@@ -29,20 +29,19 @@ DELETE FROM Customers WHERE customer_id = @customer_id;
 SELECT * FROM Products;
 
 -- View product by ID
-SELECT * FROM Products WHERE product_id = @product_id;
+SELECT * FROM Products WHERE productID = @product_id;
 
 -- Insert a new product
-INSERT INTO Products (name, description, price, stock)
-VALUES (@name, @description, @price, @stock);
+INSERT INTO Products (manufacturer, model, productType, color, price)
+VALUES (@manufacturer, @model, @productType, @color, @price);
 
 -- Update product stock and price
 UPDATE Products
-SET stock = @new_stock,
-    price = @new_price
-WHERE product_id = @product_id;
+    SET price = @new_price
+WHERE productID = @product_id;
 
 -- Delete a product
-DELETE FROM Products WHERE product_id = @product_id;
+DELETE FROM Products WHERE productID = @product_id;
 
 
 -- ORDERS
@@ -52,39 +51,40 @@ DELETE FROM Products WHERE product_id = @product_id;
 SELECT * FROM Orders;
 
 -- View all orders for a customer
-SELECT * FROM Orders WHERE customer_id = @customer_id;
+SELECT * FROM Orders WHERE Customers_customerID = @customer_id;
 
 -- Insert a new order
-INSERT INTO Orders (customer_id, order_date)
-VALUES (@customer_id, @order_date);
+INSERT INTO Orders (orderDate, shippingAddress, orderTotal, Customers_customerID)
+VALUES (@order_date, @shippingAddress, @orderTotal, @customer_id);
 
 -- Update order date
 UPDATE Orders
-SET order_date = @new_order_date
-WHERE order_id = @order_id;
+SET orderDate = @new_order_date
+WHERE orderID = @order_id;
 
 -- Delete an order
-DELETE FROM Orders WHERE order_id = @order_id;
+DELETE FROM Orders WHERE orderID = @order_id;
 
 
--- ORDER_PRODUCTS (Join Table)
+-- OrderItems (Join Table)
 -- =====================================================
 
 -- View all products in an order
-SELECT p.name, p.price, op.quantity
-FROM Order_Products op
-JOIN Products p ON op.product_id = p.product_id
-WHERE op.order_id = @order_id;
+SELECT p.model, p.price, oi.quantity
+FROM OrderItems oi
+JOIN Products p ON oi.Products_productID = p.productID
+WHERE oi.Orders_orderID = @order_id;
 
 -- Insert product into order
-INSERT INTO Order_Products (order_id, product_id, quantity)
-VALUES (@order_id, @product_id, @quantity);
+INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity, itemPrice)
+VALUES (@order_id, @product_id, @quantity, @item_price);
 
 -- Update quantity of product in an order
-UPDATE Order_Products
-SET quantity = @new_quantity
-WHERE order_id = @order_id AND product_id = @product_id;
+UPDATE OrderItems
+SET quantity = @new_quantity,
+    itemPrice = @new_price
+WHERE Orders_orderID = @order_id AND Products_productID = @product_id;
 
 -- Remove a product from an order
-DELETE FROM Order_Products
-WHERE order_id = @order_id AND product_id = @product_id;
+DELETE FROM OrderItems
+WHERE Orders_orderID = @order_id AND Products_productID = @product_id;
