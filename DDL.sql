@@ -65,6 +65,8 @@ CREATE Table Products (
   PRIMARY KEY (productID)
 );
 
+ALTER TABLE Products AUTO_INCREMENT = 101;
+
 -- Create OrderItems Table (Junction Table)
 
 CREATE Table OrderItems (
@@ -184,7 +186,6 @@ VALUES (
 -- Insert Products data
 
 INSERT INTO Products (
-    productID,
     manufacturer,
     model,
     productType,
@@ -192,7 +193,6 @@ INSERT INTO Products (
     price
 )
 VALUES (
-    101,
     "ASUS",
     "ROG Strix G16",
     "Laptop",
@@ -200,7 +200,6 @@ VALUES (
     999.99
 ),
 (
-    102,
     "Dell",
     "OptiPlex 7010",
     "Desktop",
@@ -208,7 +207,6 @@ VALUES (
     749.00
 ),
 (
-    103,
     "Logitech",
     "MX Master 3s",
     "Mouse",
@@ -216,7 +214,6 @@ VALUES (
     59.99
 ),
 (
-    104,
     "Keychron",
     "K8 Pro",
     "Keyboard",
@@ -225,7 +222,6 @@ VALUES (
 
 ),
 (
-    105,
     "SanDisk",
     "Extreme 8TB",
     "SSD",
