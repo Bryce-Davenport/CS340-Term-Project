@@ -65,8 +65,6 @@ CREATE Table Products (
   PRIMARY KEY (productID)
 );
 
-ALTER TABLE Products AUTO_INCREMENT = 101;
-
 -- Start Product ID AUTO_INCREMENT at 101
 
 ALTER TABLE Products AUTO_INCREMENT=101;
