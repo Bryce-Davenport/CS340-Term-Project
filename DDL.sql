@@ -65,6 +65,8 @@ CREATE Table Products (
   PRIMARY KEY (productID)
 );
 
+ALTER TABLE Products AUTO_INCREMENT = 101;
+
 -- Start Product ID AUTO_INCREMENT at 101
 
 ALTER TABLE Products AUTO_INCREMENT=101;
@@ -72,18 +74,18 @@ ALTER TABLE Products AUTO_INCREMENT=101;
 -- Create OrderItems Table (Junction Table)
 
 CREATE Table OrderItems (
-  orderItemID INT NULL AUTO_INCREMENT,
+  orderItemID INT NOT NULL AUTO_INCREMENT,
   quantity INT NOT NULL,
   Orders_orderID INT NOT NULL,
   Products_productID INT NOT NULL,
   PRIMARY KEY (orderItemID),
   CONSTRAINT FK_OrderItems_orderID FOREIGN KEY (Orders_orderID)
   REFERENCES Orders (orderID)
-  ON DELETE NO ACTION
+  ON DELETE CASCADE
   ON UPDATE NO ACTION,
   CONSTRAINT FK_OrderItems_productID FOREIGN KEY (Products_productID)
   REFERENCES Products (productID)
-  ON DELETE NO ACTION
+  ON DELETE CASCADE
   ON UPDATE NO ACTION
 );
 
