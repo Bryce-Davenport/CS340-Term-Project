@@ -13,14 +13,15 @@ This repository hosts Bryce Davenport and Jack Armstrong's CS340 Term Project: C
 ### File Structure:
 ```
 CS340-Term-Project/
-- backend/                # Node.js backend
-- frontend/               # Web UI files
+- backend/                      # Node.js backend
+- frontend/                     # Web UI files
     - index.html
     - style.css
-- Diagrams/               # ERDs
-- MySQL_Workbench/        # Original .mwb files from MySQL Workbench
+- Diagrams/                     # ERDs
+- MySQL_Workbench/              # Original .mwb files from MySQL Workbench
 - .gitignore             
-- DDL.sql                 # Database schema + sample data
-- backup_DDL_dump.sql     # Full schema+data backup
-- README.md               # Project notes/documentation
+- DDL.sql                       # Database schema + sample data
+- data_manipulation_queries.sql # App DB Manipulation 
+- backup_DDL_dump.sql           # Full schema+data backup
+- README.md                     # Project notes/documentation
 ```
