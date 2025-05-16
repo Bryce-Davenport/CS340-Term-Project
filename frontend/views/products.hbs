@@ -1,3 +1,5 @@
+{{> nav}}
+
 <h1>Manage Products</h1>
 
 <h2>Existing Products</h2>
@@ -39,3 +41,27 @@
 
   <button type="submit">Add Product</button>
 </form>
+
+<h2>Update Product</h2>
+<form action="/products/update" method="POST">
+  <label for="productID">Product ID:</label>
+  <input type="number" name="productID" required>
+
+  <label for="price">New Price:</label>
+  <input type="number" step="0.01" name="price" required>
+
+  <button type="submit">Update Product</button>
+</form>
+
+<h2>Delete Product</h2>
+<form action="/products/delete" method="POST">
+  <label for="productID">Product ID:</label>
+  <input type="number" name="productID" required>
+
+  <button type="submit" style="background-color: #c0392b; color: white;">
+    Delete Product
+  </button>
+</form>
+
+
+

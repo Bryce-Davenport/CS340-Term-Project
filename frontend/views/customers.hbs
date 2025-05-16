@@ -1,3 +1,5 @@
+{{> nav}}
+
 <h1>Manage Customers</h1>
 
 <h2>Existing Customers</h2>
@@ -28,4 +30,28 @@
   <input type="tel" name="phoneNumber">
 
   <button type="submit">Add Customer</button>
+</form>
+
+<h2>Update Existing Customer</h2>
+<form action="/customers/update" method="POST">
+  <label for="customerID">Customer ID:</label>
+  <input type="number" name="customerID" required>
+
+  <label for="email">New Email:</label>
+  <input type="email" name="email" required>
+
+  <label for="phoneNumber">New Phone Number:</label>
+  <input type="text" name="phoneNumber" required>
+
+  <button type="submit">Update Customer</button>
+</form>
+
+<h2>Delete Customer</h2>
+<form action="/customers/delete" method="POST">
+  <label for="customerID">Customer ID:</label>
+  <input type="number" name="customerID" required>
+
+  <button type="submit" style="background-color: #c0392b; color: white;">
+    Delete Customer
+  </button>
 </form>

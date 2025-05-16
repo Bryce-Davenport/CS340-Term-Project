@@ -14,15 +14,18 @@
     # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
 */
 
+USE cs340_davenpbr; /*update here when chaning DB*/
+
+
 SET FOREIGN_KEY_CHECKS=0;
 SET AUTOCOMMIT = 0;
 
 -- Clear all DB Tables
 
-DROP TABLE IF EXISTS Customers;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS Products;
 DROP TABLE IF EXISTS OrderItems;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Customers;
 
 /*
     Creating database tables
@@ -157,34 +160,6 @@ VALUES (
     (SELECT customerID FROM Customers WHERE email = "carter.blake@fakemail.net")
 );
 
--- Insert OrderItems data
-
-INSERT INTO OrderItems (
-    quantity,
-    Orders_orderID,
-    Products_productID
-)
-VALUES (
-    1,
-    1,
-    101
-),
-(
-    2,
-    2,
-    104
-),
-(
-    1,
-    2,
-    102
-),
-(
-    1,
-    3,
-    105
-);
-
 -- Insert Products data
 
 INSERT INTO Products (
@@ -229,6 +204,34 @@ VALUES (
     "SSD",
     "Red/Black",
     139.00
+);
+
+-- Insert OrderItems data
+
+INSERT INTO OrderItems (
+    quantity,
+    Orders_orderID,
+    Products_productID
+)
+VALUES (
+    1,
+    1,
+    101
+),
+(
+    2,
+    2,
+    104
+),
+(
+    1,
+    2,
+    102
+),
+(
+    1,
+    3,
+    105
 );
 
 SET FOREIGN_KEY_CHECKS=1;
