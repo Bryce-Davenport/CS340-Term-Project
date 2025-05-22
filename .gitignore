@@ -6,10 +6,14 @@ node_modules/
 # Environment files and secrets
 .env
 login.txt
+db.js
+db-connector.js
+DDL.sql
 
 # MySQL Workbench autosaves/backups
 *.mwb~
 *.bak
+dropAll.sql
 
 # OS-specific files
 .DS_Store
