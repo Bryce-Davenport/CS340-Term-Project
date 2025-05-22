@@ -4,7 +4,7 @@ const db = require('./db-connector');
 const path = require('path');
 
 const app = express();
-const PORT = 4401; 
+const PORT = 4450; 
 
 // Handlebars setup
 app.engine('hbs', exphbs.engine({
@@ -26,6 +26,17 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // Routes
 app.get('/', (req, res) => {
   res.render('index'); 
+});
+
+// reset route
+app.post('/index/reset', async (req, res) => {
+  try {
+    await db.query('CALL sp_load_computerStoreDB()')
+    res.render('index'); 
+  } catch (err) {
+    console.error('Error resetting database:', err);
+    res.status(500).send('Error resetting database');
+  }
 });
 
 // orderItems route
@@ -54,8 +65,19 @@ app.get('/orderitems', async (req, res) => {
   }
 });
 
-app.get('/products', (req, res) => {
-  res.render('products');
+app.get('/products', async (req, res) => {
+    try {
+    const [products] = await db.query(
+      `SELECT productID, manufacturer, model, productType, color, price FROM Products`
+    );
+
+    res.render('products', {
+      products: products
+    });
+  } catch (err) {
+    console.error('Error loading products:', err);
+    res.status(500).send('Error loading products');
+  }
 });
 
 app.get('/orders', async (req, res) => {
@@ -81,8 +103,19 @@ app.get('/orders', async (req, res) => {
   }
 });
 
-app.get('/customers', (req, res) => {
-  res.render('customers');
+app.get('/customers', async (req, res) => {
+  try {
+    const [customers] = await db.query(
+      `SELECT customerID, email, streetAddress, phoneNumber FROM Customers`
+    );
+
+    res.render('customers', {
+      customers: customers
+    });
+  } catch (err) {
+    console.error('Error loading customers:', err);
+    res.status(500).send('Error loading customers');
+  }
 });
 
 app.post('/customers/update', async (req, res) => {

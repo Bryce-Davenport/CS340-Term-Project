@@ -6,9 +6,9 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit   : 10,
     host              : 'classmysql.engr.oregonstate.edu',
-    user              : 'cs340_[USER]',
-    password          : '[PASSWORD]',
-    database          : 'cs340_[USER]'
+    user              : 'cs340_armsjack',
+    password          : '4538',
+    database          : 'cs340_armsjack'
 }).promise(); 
 
 

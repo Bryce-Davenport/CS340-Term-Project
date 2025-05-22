@@ -3,8 +3,7 @@
 <h1>Manage Order Items</h1>
 
 <h2>Sample Order Items</h2>
-<table>
-  <thead>
+<table border="1">
     <tr>
       <th>Order Item ID</th>
       <th>Order ID</th>
@@ -14,20 +13,17 @@
       <th>Price</th>
       <th>Quantity</th>
     </tr>
-  </thead>
-  <tbody>
     {{#each orderitems}}
     <tr>
-      <td>{{this.orderItemID}}</td>
-      <td>{{this.orderID}}</td>
-      <td>{{this.orderDate}}</td>
-      <td>{{this.productID}}</td>
-      <td>{{this.model}}</td>
-      <td>{{this.price}}</td>
-      <td>{{this.quantity}}</td>
+      <td>{{orderItemID}}</td>
+      <td>{{orderID}}</td>
+      <td>{{orderDate}}</td>
+      <td>{{productID}}</td>
+      <td>{{model}}</td>
+      <td>{{price}}</td>
+      <td>{{quantity}}</td>
     </tr>
     {{/each}}
-  </tbody>
 </table>
 
 <hr>

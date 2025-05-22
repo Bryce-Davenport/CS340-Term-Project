@@ -10,12 +10,23 @@
     <th>Street Address</th>
     <th>Phone Number</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>jordan.miles42@example.com</td>
-    <td>St, Portland, OR 97232</td>
-    <td>5034217742</td>
-  </tr>
+  {{!
+    Citation for Project Step 4:
+    Date: 05/22/2025
+
+    Based on Project Step 4 Draft instructions:
+    Source URL: https://copilot.microsoft.com/
+
+    AI Prompt: Asked to generate an outline for displaying object data in hbs
+  }}
+  {{#each customers}}
+      <tr>
+        <td>{{customerID}}</td>
+        <td>{{email}}</td>
+        <td>{{streetAddress}}</td>
+        <td>{{phoneNumber}}</td>
+      </tr>
+  {{/each}}
 </table>
 
 <h2>Add New Customer</h2>

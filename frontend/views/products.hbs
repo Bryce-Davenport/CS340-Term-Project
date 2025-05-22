@@ -12,14 +12,16 @@
     <th>Color</th>
     <th>Price</th>
   </tr>
+  {{#each products}}
   <tr>
-    <td>101</td>
-    <td>ASUS</td>
-    <td>ROG Strix G16</td>
-    <td>Laptop</td>
-    <td>Black</td>
-    <td>$999.99</td>
+    <td>{{productID}}</td>
+    <td>{{manufacturer}}</td>
+    <td>{{model}}</td>
+    <td>{{productType}}</td>
+    <td>{{color}}</td>
+    <td>${{price}}</td>
   </tr>
+  {{/each}}
 </table>
 
 <h2>Add New Product</h2>

@@ -11,13 +11,15 @@
     <th>Order Total</th>
     <th>Customer</th>
   </tr>
+  {{#each orders}}
   <tr>
-    <td>1</td>
-    <td>2025-04-15</td>
-    <td>1342 NE Davis St, Portland, OR 97232</td>
-    <td>$149.99</td>
-    <td>jordan.miles42@example.com</td>
+    <td>{{orderID}}</td>
+    <td>{{orderDate}}</td>
+    <td>{{shippingAddress}}</td>
+    <td>${{orderTotal}}</td>
+    <td>{{email}}</td>
   </tr>
+  {{/each}}
 </table>
 
 <h2>Add Order</h2>
@@ -34,7 +36,7 @@
   <label for="customerID">Customer:</label>
   <select name="customerID" required>
     {{#each customers}}
-      <option value="{{this.customerID}}">{{this.email}}</option>
+    <option value="{{this.customerID}}">{{this.email}}</option>
     {{/each}}
   </select>
 
