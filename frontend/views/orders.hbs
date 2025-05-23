@@ -45,8 +45,14 @@
 
 <h2>Update Order Date</h2>
 <form action="/orders/update" method="POST">
-  <label for="orderID">Order ID:</label>
-  <input type="number" name="orderID" required>
+  <label for="orderID">Select Order:</label>
+  <select name="orderID" required>
+    {{#each orders}}
+      <option value="{{orderID}}">
+        #{{orderID}} — {{orderDate}} — {{email}}
+      </option>
+    {{/each}}
+  </select>
 
   <label for="orderDate">New Order Date:</label>
   <input type="date" name="orderDate" required>
@@ -56,8 +62,14 @@
 
 <h2>Delete Order</h2>
 <form action="/orders/delete" method="POST">
-  <label for="orderID">Order ID:</label>
-  <input type="number" name="orderID" required>
+  <label for="orderID">Select Order:</label>
+  <select name="orderID" required>
+    {{#each orders}}
+      <option value="{{orderID}}">
+        #{{orderID}} — {{orderDate}} — {{email}}
+      </option>
+    {{/each}}
+  </select>
 
   <button type="submit" style="background-color: #c0392b; color: white;">
     Delete Order

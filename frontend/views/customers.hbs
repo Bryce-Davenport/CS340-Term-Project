@@ -45,8 +45,14 @@
 
 <h2>Update Existing Customer</h2>
 <form action="/customers/update" method="POST">
-  <label for="customerID">Customer ID:</label>
-  <input type="number" name="customerID" required>
+  <label for="customerID">Select Customer:</label>
+  <select name="customerID" required>
+    {{#each customers}}
+      <option value="{{customerID}}">
+        #{{customerID}} - {{email}}
+      </option>
+    {{/each}}
+  </select>
 
   <label for="email">New Email:</label>
   <input type="email" name="email" required>
@@ -59,8 +65,14 @@
 
 <h2>Delete Customer</h2>
 <form action="/customers/delete" method="POST">
-  <label for="customerID">Customer ID:</label>
-  <input type="number" name="customerID" required>
+  <label for="customerID">Select Customer:</label>
+  <select name="customerID" required>
+    {{#each customers}}
+      <option value="{{customerID}}">
+        #{{customerID}} - {{email}}
+      </option>
+    {{/each}}
+  </select>
 
   <button type="submit" style="background-color: #c0392b; color: white;">
     Delete Customer

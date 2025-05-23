@@ -13,8 +13,9 @@
     <p>Developed by: Jack Armstrong and Bryce Davenport</p>
     <h3>Reset DB:</h3>
     <form action="/index/reset" method="POST">
-      {{! TODO: Could potentially add a reset button here on the home page}}
-      <button type="submit">Reset</button>
+      <button type="submit" onclick="return confirm('Reset the database to original sample data?')" style="background-color: #c0392b; color: white;">  <!-- This simply outputs a confirmation to the screen prior to reset -->
+        Reset
+      </button>
     </form>
   </main>
 </body>

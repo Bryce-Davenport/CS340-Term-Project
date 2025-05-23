@@ -14,7 +14,7 @@
     # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
 */
 
-USE cs340_armsjack; /*update here when changing DB*/
+USE cs340_davenpbr; /*update here when changing DB*/
 
 
 SET FOREIGN_KEY_CHECKS=0;

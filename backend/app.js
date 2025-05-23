@@ -44,14 +44,14 @@ app.get('/orderitems', async (req, res) => {
   try {
     const [orderitems] = await db.query(`
       SELECT oi.orderItemID, oi.quantity,
-             o.orderID, o.orderDate,
-             p.productID, p.model, p.price
-      FROM OrderItems oi
-      JOIN Orders o ON oi.Orders_orderID = o.orderID
-      JOIN Products p ON oi.Products_productID = p.productID;
+            o.orderID, DATE_FORMAT(o.orderDate, '%m/%d/%Y') AS orderDate,
+            p.productID, p.model, p.price
+    FROM OrderItems oi
+    JOIN Orders o ON oi.Orders_orderID = o.orderID
+    JOIN Products p ON oi.Products_productID = p.productID;
     `);
 
-    const [orders] = await db.query(`SELECT orderID, orderDate FROM Orders`);
+    const [orders] = await db.query(`SELECT orderID, DATE_FORMAT(orderDate, '%m/%d/%Y') AS orderDate FROM Orders`);
     const [products] = await db.query(`SELECT productID, model FROM Products`);
 
     res.render('orderitems', {
@@ -87,10 +87,11 @@ app.get('/orders', async (req, res) => {
     );
 
     const [orders] = await db.query(
-      `SELECT o.orderID, o.orderDate, o.shippingAddress, o.orderTotal,
+      `SELECT o.orderID, DATE_FORMAT(o.orderDate, '%m/%d/%Y') AS orderDate,
+              o.shippingAddress, o.orderTotal,
               c.customerID, c.email
-       FROM Orders o
-       JOIN Customers c ON o.Customers_customerID = c.customerID`
+      FROM Orders o
+      JOIN Customers c ON o.Customers_customerID = c.customerID`
     );
 
     res.render('orders', {
@@ -115,6 +116,23 @@ app.get('/customers', async (req, res) => {
   } catch (err) {
     console.error('Error loading customers:', err);
     res.status(500).send('Error loading customers');
+  }
+});
+
+app.post('/customers/add', async (req, res) => {
+  const { email, streetAddress, phoneNumber } = req.body;
+
+  const query = `
+    INSERT INTO Customers (email, streetAddress, phoneNumber)
+    VALUES (?, ?, ?);
+  `;
+
+  try {
+    await db.query(query, [email, streetAddress, phoneNumber]);
+    res.redirect('/customers');
+  } catch (err) {
+    console.error('Error adding customer:', err);
+    res.status(500).send('Error adding customer');
   }
 });
 
@@ -153,6 +171,23 @@ app.post('/customers/delete', async (req, res) => {
   }
 });
 
+app.post('/products/add', async (req, res) => {
+  const { manufacturer, model, productType, color, price } = req.body;
+
+  const query = `
+    INSERT INTO Products (manufacturer, model, productType, color, price)
+    VALUES (?, ?, ?, ?, ?);
+  `;
+
+  try {
+    await db.query(query, [manufacturer, model, productType, color, price]);
+    res.redirect('/products');
+  } catch (err) {
+    console.error('Error adding product:', err);
+    res.status(500).send('Error adding product');
+  }
+});
+
 app.post('/products/update', async (req, res) => {
   const { productID, price } = req.body;
 
@@ -185,6 +220,23 @@ app.post('/products/delete', async (req, res) => {
   } catch (err) {
     console.error('Error deleting product:', err);
     res.status(500).send('Database delete error');
+  }
+});
+
+app.post('/orders/add', async (req, res) => {
+  const { orderDate, shippingAddress, orderTotal, customerID } = req.body;
+
+  const query = `
+    INSERT INTO Orders (orderDate, shippingAddress, orderTotal, Customers_customerID)
+    VALUES (?, ?, ?, ?);
+  `;
+
+  try {
+    await db.query(query, [orderDate, shippingAddress, orderTotal, customerID]);
+    res.redirect('/orders');
+  } catch (err) {
+    console.error('Error adding order:', err);
+    res.status(500).send('Error adding order');
   }
 });
 
@@ -237,6 +289,41 @@ app.post('/orderitems/add', async (req, res) => {
   } catch (err) {
     console.error('Error inserting order item:', err);
     res.status(500).send('Insert error');
+  }
+});
+
+app.post('/orderitems/update', async (req, res) => {
+  const { orderItemID, newOrderID, newProductID, newQuantity } = req.body;
+
+  const query = `
+    UPDATE OrderItems
+    SET Orders_orderID = ?, Products_productID = ?, quantity = ?
+    WHERE orderItemID = ?;
+  `;
+
+  try {
+    await db.query(query, [newOrderID, newProductID, newQuantity, orderItemID]);
+    res.redirect('/orderitems');
+  } catch (err) {
+    console.error('Error updating order item:', err);
+    res.status(500).send('Update failed');
+  }
+});
+
+app.post('/orderitems/delete', async (req, res) => {
+  const { orderItemID } = req.body;
+
+  const query = `
+    DELETE FROM OrderItems
+    WHERE orderItemID = ?;
+  `;
+
+  try {
+    await db.query(query, [orderItemID]);
+    res.redirect('/orderitems');
+  } catch (err) {
+    console.error('Error deleting order item:', err);
+    res.status(500).send('Database delete error');
   }
 });
 

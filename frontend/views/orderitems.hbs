@@ -26,7 +26,7 @@
     {{/each}}
 </table>
 
-<hr>
+
 
 <h2>Add Order Item</h2>
 <form action="/orderitems/add" method="POST">
@@ -50,21 +50,56 @@
   <button type="submit">Add to Order</button>
 </form>
 
-<hr>
 
 <h2>Update Order Item</h2>
-<form>
-  <label>Order ID: <input type="number" name="order_id"></label><br>
-  <label>Product ID: <input type="number" name="product_id"></label><br>
-  <label>New Quantity: <input type="number" name="new_quantity"></label><br>
-  <button type="submit">Update</button>
+<form action="/orderitems/update" method="POST">
+  <!-- Select the existing OrderItem -->
+  <label for="orderItemID">Order Item:</label>
+  <select name="orderItemID" required>
+    {{#each orderitems}}
+      <option value="{{orderItemID}}">
+        #{{orderItemID}} — Order #{{orderID}}, Product #{{productID}}, Qty: {{quantity}}
+      </option>
+    {{/each}}
+  </select>
+  <br><br>
+
+  <!-- New Order ID -->
+  <label for="newOrderID">New Order:</label>
+  <select name="newOrderID" required>
+    {{#each orders}}
+      <option value="{{orderID}}">Order #{{orderID}} - {{orderDate}}</option>
+    {{/each}}
+  </select>
+  <br><br>
+
+  <!-- New Product ID -->
+  <label for="newProductID">New Product:</label>
+  <select name="newProductID" required>
+    {{#each products}}
+      <option value="{{productID}}">{{model}}</option>
+    {{/each}}
+  </select>
+  <br><br>
+
+  <!-- New Quantity -->
+  <label for="newQuantity">New Quantity:</label>
+  <input type="number" name="newQuantity" min="1" required>
+  <br><br>
+
+  <button type="submit">Update Order Item</button>
 </form>
 
-<hr>
 
 <h2>Delete Order Item</h2>
-<form>
-  <label>Order ID: <input type="number" name="order_id"></label><br>
-  <label>Product ID: <input type="number" name="product_id"></label><br>
-  <button type="submit">Delete</button>
+<form action="/orderitems/delete" method="POST">
+  <label for="orderItemID">Select Order Item:</label>
+  <select name="orderItemID" required>
+    {{#each orderitems}}
+      <option value="{{orderItemID}}">
+        OrderItem #{{orderItemID}} - Order #{{orderID}}, Product #{{productID}}, Qty: {{quantity}}
+      </option>
+    {{/each}}
+  </select>
+  <button type="submit" style="background-color: #c0392b; color: white;">Delete Order Item</button>
 </form>

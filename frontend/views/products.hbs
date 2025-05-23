@@ -46,8 +46,14 @@
 
 <h2>Update Product</h2>
 <form action="/products/update" method="POST">
-  <label for="productID">Product ID:</label>
-  <input type="number" name="productID" required>
+  <label for="productID">Select Product:</label>
+  <select name="productID" required>
+    {{#each products}}
+      <option value="{{productID}}">
+        #{{productID}} — {{manufacturer}} {{model}}
+      </option>
+    {{/each}}
+  </select>
 
   <label for="price">New Price:</label>
   <input type="number" step="0.01" name="price" required>
@@ -57,8 +63,14 @@
 
 <h2>Delete Product</h2>
 <form action="/products/delete" method="POST">
-  <label for="productID">Product ID:</label>
-  <input type="number" name="productID" required>
+  <label for="productID">Select Product:</label>
+  <select name="productID" required>
+    {{#each products}}
+      <option value="{{productID}}">
+        #{{productID}} — {{manufacturer}} {{model}}
+      </option>
+    {{/each}}
+  </select>
 
   <button type="submit" style="background-color: #c0392b; color: white;">
     Delete Product
