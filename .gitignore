@@ -6,8 +6,8 @@ node_modules/
 # Environment files and secrets
 .env
 login.txt
-db.js
-db-connector.js
+backend/db.js
+backend/db-connector.js
 DDL.sql
 
 # MySQL Workbench autosaves/backups

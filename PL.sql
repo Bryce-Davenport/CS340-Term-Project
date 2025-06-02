@@ -7,7 +7,6 @@
 
     # Used the skeleton of the moviesDB to create the SP
 */
-
 DROP PROCEDURE IF EXISTS sp_load_computerStoreDB;
 DELIMITER //
 
@@ -122,6 +121,7 @@ BEGIN
         "1680 Commercial St SE, Salem, OR 97302",
         "5037778402"
     );
+    COMMIT;
 
     -- Insert Orders data
 
@@ -230,7 +230,376 @@ BEGIN
         105
     );
 
+    COMMIT;
     SET FOREIGN_KEY_CHECKS=1;
+END //
+
+DELIMITER ;
+
+/*
+    Customers SP's
+*/
+
+-- ---------------------------------------
+-- View customers stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_view_customers;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_view_customers()
+BEGIN
+    SELECT customerID, email, streetAddress, phoneNumber FROM Customers;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Add customers stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_add_customers;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_add_customers(
+  IN c_email VARCHAR(355),
+  IN c_streetAddress VARCHAR(255),
+  IN c_phoneNumber VARCHAR(15)
+)
+BEGIN
+    INSERT INTO Customers (email, streetAddress, phoneNumber)
+    VALUES (c_email, c_streetAddress, c_phoneNumber);
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Update customers stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_update_customers;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_update_customers(
+    IN c_customerID INT,
+    IN c_newEmail VARCHAR(355),
+    IN c_newPhoneNumber VARCHAR(15)
+)
+BEGIN
+    UPDATE Customers
+    SET phoneNumber = c_newPhoneNumber,
+    email = c_newEmail
+    WHERE customerID = c_customerID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Delete customers stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_delete_customers;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_delete_customers(
+    IN c_customerID INT
+)
+BEGIN
+    DELETE FROM Customers WHERE customerID = c_customer_id;
+END //
+
+DELIMITER ;
+
+/*
+    Products SP's
+*/
+
+-- ---------------------------------------
+-- View products stored procedure
+-- ---------------------------------------
+DROP PROCEDURE IF EXISTS sp_view_products;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_view_products()
+BEGIN
+    SELECT productID, manufacturer, model, productType, color, price FROM Products;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Add products stored procedure
+-- ---------------------------------------
+DROP PROCEDURE IF EXISTS sp_add_products;
+
+DELIMITER //
+
+-- Citation for the following code:
+-- Date: 06/01/25
+-- Copied from /OR/ Adapted from /OR/ Based on:
+-- I used copilot to generate the IN variables
+-- Source URL: https://copilot.microsoft.com/
+-- If AI tools were used, prompt:
+--    Please generate the IN parameters for adding a product in MySQL containing the
+--    manufacturer, model, productType, color, and price
+CREATE PROCEDURE sp_add_products(
+    IN p_manufacturer VARCHAR(255),
+    IN p_model VARCHAR(255),
+    IN p_productType VARCHAR(255),
+    IN p_color VARCHAR(255),
+    IN p_price DECIMAL(10,2)
+)
+BEGIN
+    INSERT INTO Products (manufacturer, model, productType, color, price)
+    VALUES (p_manufacturer, p_model, p_productType, p_color, p_price);
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Update products stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_update_products;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_update_products(
+    IN p_newPrice DECIMAL(10,2),
+    IN p_productID INT
+)
+BEGIN
+    UPDATE Products
+        SET price = p_newPrice
+    WHERE productID = p_product_id;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Delete products stored procedure
+-- ---------------------------------------
+DROP PROCEDURE IF EXISTS sp_delete_products;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_delete_products(
+    p_productID INT
+)
+BEGIN
+    DELETE FROM Products
+    WHERE productID = p_productID;
+END //
+
+DELIMITER ;
+
+/*
+    Orders SP's
+*/
+
+-- ---------------------------------------
+-- View orders stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_view_orders;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_view_orders()
+BEGIN
+    SELECT o.orderID, o.orderDate, o.shippingAddress, o.orderTotal,
+       c.customerID, c.email
+    FROM Orders o
+    JOIN Customers c ON o.Customers_customerID = c.customerID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Add orders stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_add_orders;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_add_orders(
+    IN o_orderDate DATE,
+    IN o_shippingAddress VARCHAR(255),
+    IN o_orderTotal DECIMAL(10,2),
+    IN o_customerID INT
+)
+BEGIN
+    INSERT INTO Orders (orderDate, shippingAddress, orderTotal, Customers_customerID)
+    VALUES (o_orderDate, o_shippingAddress, o_orderTotal, o_customerID);
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Update orders stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_update_orders;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_update_orders(
+    IN o_newOrderDate DATE,
+    IN o_orderID INT
+)
+BEGIN
+    UPDATE Orders
+    SET orderDate = o_newOrderDate
+    WHERE orderID = o_orderID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Delete orders stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_delete_orders;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_delete_orders(
+    IN o_orderID INT
+)
+BEGIN
+    DELETE FROM Orders
+    WHERE orderID = o_orderID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Dropdown Query for customerID and email from customers stored procedure
+-- ---------------------------------------
+DROP PROCEDURE IF EXISTS sp_view_customerOrders;
+DELIMITER //
+
+CREATE PROCEDURE sp_view_customerOrders()
+BEGIN
+    SELECT customerID, email FROM Customers;
+END //
+
+DELIMITER ;
+
+/*
+    orderItems SP's
+*/
+
+-- ---------------------------------------
+-- View orderItems stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_view_orderItems;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_view_orderItems()
+BEGIN
+    SELECT oi.orderItemID, oi.quantity,
+       o.orderID, o.orderDate,
+       p.productID, p.model, p.price
+    FROM OrderItems oi
+    JOIN Orders o ON oi.Orders_orderID = o.orderID
+    JOIN Products p ON oi.Products_productID = p.productID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Add orderItems stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_add_orderItems;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_add_orderItems(
+    IN oi_orderID INT,
+    IN oi_productID INT,
+    IN oi_quantity INT
+)
+BEGIN
+    INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity)
+    VALUES (oi_orderID, oi_productID, oi_quantity);
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Update orderItems stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_update_orderItems;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_update_orderItems(
+    IN oi_orderItemID INT,
+    IN oi_newOrderID INT,
+    IN oi_newProductID INT,
+    IN oi_newQuantity INT
+)
+BEGIN
+    UPDATE OrderItems
+    SET Orders_orderID = oi_orderItemID, Products_productID = oi_newProductID, quantity = oi_newQuantity
+    WHERE orderItemID = oi_newOrderID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Delete orderItems stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_delete_orderItems;
+
+DELIMITER //
+
+CREATE PROCEDURE sp_delete_orderItems(
+    IN oi_orderItemID INT
+)
+BEGIN
+    DELETE FROM OrderItems
+    WHERE orderItemID = oi_orderItemID;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Dropdown Query for orderID and orderDate stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_view_order_OrderItems;
+DELIMITER //
+
+CREATE PROCEDURE sp_view_order_OrderItems()
+BEGIN
+    SELECT orderID, DATE_FORMAT(orderDate, '%m/%d/%Y') AS orderDate FROM Orders;
+END //
+
+DELIMITER ;
+
+-- ---------------------------------------
+-- Dropdown Query for productID and model stored procedure
+-- ---------------------------------------
+
+DROP PROCEDURE IF EXISTS sp_view_product_OrderItems;
+DELIMITER //
+
+CREATE PROCEDURE sp_view_product_OrderItems()
+BEGIN
+    SELECT productID, model FROM Products;
 END //
 
 DELIMITER ;

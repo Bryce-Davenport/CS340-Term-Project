@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 // reset route
 app.post('/index/reset', async (req, res) => {
   try {
-    await db.query('CALL sp_load_computerStoreDB()')
+    await db.query('CALL sp_load_computerStoreDB')
     res.render('index'); 
   } catch (err) {
     console.error('Error resetting database:', err);
@@ -39,75 +39,11 @@ app.post('/index/reset', async (req, res) => {
   }
 });
 
-// orderItems route
-app.get('/orderitems', async (req, res) => {
-  try {
-    const [orderitems] = await db.query(`
-      SELECT oi.orderItemID, oi.quantity,
-            o.orderID, DATE_FORMAT(o.orderDate, '%m/%d/%Y') AS orderDate,
-            p.productID, p.model, p.price
-    FROM OrderItems oi
-    JOIN Orders o ON oi.Orders_orderID = o.orderID
-    JOIN Products p ON oi.Products_productID = p.productID;
-    `);
-
-    const [orders] = await db.query(`SELECT orderID, DATE_FORMAT(orderDate, '%m/%d/%Y') AS orderDate FROM Orders`);
-    const [products] = await db.query(`SELECT productID, model FROM Products`);
-
-    res.render('orderitems', {
-      orderitems,
-      orders,
-      products
-    });
-  } catch (err) {
-    console.error('Error loading orderitems:', err);
-    res.status(500).send('Error loading orderitems');
-  }
-});
-
-app.get('/products', async (req, res) => {
-    try {
-    const [products] = await db.query(
-      `SELECT productID, manufacturer, model, productType, color, price FROM Products`
-    );
-
-    res.render('products', {
-      products: products
-    });
-  } catch (err) {
-    console.error('Error loading products:', err);
-    res.status(500).send('Error loading products');
-  }
-});
-
-app.get('/orders', async (req, res) => {
-  try {
-    const [customers] = await db.query(
-      `SELECT customerID, email FROM Customers`
-    );
-
-    const [orders] = await db.query(
-      `SELECT o.orderID, DATE_FORMAT(o.orderDate, '%m/%d/%Y') AS orderDate,
-              o.shippingAddress, o.orderTotal,
-              c.customerID, c.email
-      FROM Orders o
-      JOIN Customers c ON o.Customers_customerID = c.customerID`
-    );
-
-    res.render('orders', {
-      orders: orders,
-      customers: customers
-    });
-  } catch (err) {
-    console.error('Error loading orders:', err);
-    res.status(500).send('Error loading orders');
-  }
-});
-
+// Customers CUD
 app.get('/customers', async (req, res) => {
   try {
-    const [customers] = await db.query(
-      `SELECT customerID, email, streetAddress, phoneNumber FROM Customers`
+    const [[customers]] = await db.query(
+      `CALL sp_view_customers`
     );
 
     res.render('customers', {
@@ -122,10 +58,7 @@ app.get('/customers', async (req, res) => {
 app.post('/customers/add', async (req, res) => {
   const { email, streetAddress, phoneNumber } = req.body;
 
-  const query = `
-    INSERT INTO Customers (email, streetAddress, phoneNumber)
-    VALUES (?, ?, ?);
-  `;
+  const query = `CALL sp_add_customers(?, ?, ?)`;
 
   try {
     await db.query(query, [email, streetAddress, phoneNumber]);
@@ -139,14 +72,10 @@ app.post('/customers/add', async (req, res) => {
 app.post('/customers/update', async (req, res) => {
   const { customerID, email, phoneNumber } = req.body;
 
-  const query = `
-    UPDATE Customers
-    SET email = ?, phoneNumber = ?
-    WHERE customerID = ?;
-  `;
+  const query = `CALL sp_update_customers(?, ?, ?)`;
 
   try {
-    await db.query(query, [email, phoneNumber, customerID]);
+    await db.query(query, [customerID, email, phoneNumber]);
     res.redirect('/customers');
   } catch (err) {
     console.error('Error updating customer:', err);
@@ -157,10 +86,7 @@ app.post('/customers/update', async (req, res) => {
 app.post('/customers/delete', async (req, res) => {
   const { customerID } = req.body;
 
-  const query = `
-    DELETE FROM Customers
-    WHERE customerID = ?;
-  `;
+  const query = `CALL sp_delete_customers(?)`;
 
   try {
     await db.query(query, [customerID]);
@@ -171,13 +97,26 @@ app.post('/customers/delete', async (req, res) => {
   }
 });
 
+// Products CUD 
+app.get('/products', async (req, res) => {
+    try {
+    const [[products]] = await db.query(
+      `CALL sp_view_products`
+    );
+
+    res.render('products', {
+      products: products
+    });
+  } catch (err) {
+    console.error('Error loading products:', err);
+    res.status(500).send('Error loading products');
+  }
+});
+
 app.post('/products/add', async (req, res) => {
   const { manufacturer, model, productType, color, price } = req.body;
 
-  const query = `
-    INSERT INTO Products (manufacturer, model, productType, color, price)
-    VALUES (?, ?, ?, ?, ?);
-  `;
+  const query = `CALL sp_add_products(?, ?, ?, ?, ?)`;
 
   try {
     await db.query(query, [manufacturer, model, productType, color, price]);
@@ -189,13 +128,9 @@ app.post('/products/add', async (req, res) => {
 });
 
 app.post('/products/update', async (req, res) => {
-  const { productID, price } = req.body;
+  const { price, productID } = req.body;
 
-  const query = `
-    UPDATE Products
-    SET price = ?
-    WHERE productID = ?;
-  `;
+  const query = `CALL sp_update_products(?, ?)`;
 
   try {
     await db.query(query, [price, productID]);
@@ -209,10 +144,7 @@ app.post('/products/update', async (req, res) => {
 app.post('/products/delete', async (req, res) => {
   const { productID } = req.body;
 
-  const query = `
-    DELETE FROM Products
-    WHERE productID = ?;
-  `;
+  const query = `CALL sp_delete_products(?)`;
 
   try {
     await db.query(query, [productID]);
@@ -223,13 +155,31 @@ app.post('/products/delete', async (req, res) => {
   }
 });
 
+// Orders CUD
+app.get('/orders', async (req, res) => {
+  try {
+    const [[customers]] = await db.query(
+      `CALL sp_view_customerOrders`
+    );
+
+    const [[orders]] = await db.query(
+      `CALL sp_view_orders`
+    );
+
+    res.render('orders', {
+      orders: orders,
+      customers: customers
+    });
+  } catch (err) {
+    console.error('Error loading orders:', err);
+    res.status(500).send('Error loading orders');
+  }
+});
+
 app.post('/orders/add', async (req, res) => {
   const { orderDate, shippingAddress, orderTotal, customerID } = req.body;
 
-  const query = `
-    INSERT INTO Orders (orderDate, shippingAddress, orderTotal, Customers_customerID)
-    VALUES (?, ?, ?, ?);
-  `;
+  const query = `CALL sp_add_orders(?, ?, ?, ?)`;
 
   try {
     await db.query(query, [orderDate, shippingAddress, orderTotal, customerID]);
@@ -241,13 +191,9 @@ app.post('/orders/add', async (req, res) => {
 });
 
 app.post('/orders/update', async (req, res) => {
-  const { orderID, orderDate } = req.body;
+  const { orderDate, orderID } = req.body;
 
-  const query = `
-    UPDATE Orders
-    SET orderDate = ?
-    WHERE orderID = ?;
-  `;
+  const query = `CALL sp_update_orders(?, ?)`;
 
   try {
     await db.query(query, [orderDate, orderID]);
@@ -261,10 +207,7 @@ app.post('/orders/update', async (req, res) => {
 app.post('/orders/delete', async (req, res) => {
   const { orderID } = req.body;
 
-  const query = `
-    DELETE FROM Orders
-    WHERE orderID = ?;
-  `;
+  const query = `CALL sp_delete_orders(?)`;
 
   try {
     await db.query(query, [orderID]);
@@ -275,13 +218,29 @@ app.post('/orders/delete', async (req, res) => {
   }
 });
 
+// orderItems CUD
+app.get('/orderitems', async (req, res) => {
+  try {
+    const [[orderitems]] = await db.query(`CALL sp_view_orderItems()`);
+
+    const [[orders]] = await db.query(`CALL sp_view_order_OrderItems()`);
+    const [[products]] = await db.query(`CALL sp_view_product_OrderItems()`);
+
+    res.render('orderitems', {
+      orderitems,
+      orders,
+      products
+    });
+  } catch (err) {
+    console.error('Error loading orderitems:', err);
+    res.status(500).send('Error loading orderitems');
+  }
+});
+
 app.post('/orderitems/add', async (req, res) => {
   const { orderID, productID, quantity } = req.body;
 
-  const query = `
-    INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity)
-    VALUES (?, ?, ?);
-  `;
+  const query = `CALL sp_add_orderItems(?, ?, ?)`;
 
   try {
     await db.query(query, [orderID, productID, quantity]);
@@ -295,14 +254,10 @@ app.post('/orderitems/add', async (req, res) => {
 app.post('/orderitems/update', async (req, res) => {
   const { orderItemID, newOrderID, newProductID, newQuantity } = req.body;
 
-  const query = `
-    UPDATE OrderItems
-    SET Orders_orderID = ?, Products_productID = ?, quantity = ?
-    WHERE orderItemID = ?;
-  `;
+  const query = `CALL sp_update_orderItems(?, ?, ?, ?)`;
 
   try {
-    await db.query(query, [newOrderID, newProductID, newQuantity, orderItemID]);
+    await db.query(query, [orderItemID, newOrderID, newProductID, newQuantity]);
     res.redirect('/orderitems');
   } catch (err) {
     console.error('Error updating order item:', err);
@@ -313,10 +268,7 @@ app.post('/orderitems/update', async (req, res) => {
 app.post('/orderitems/delete', async (req, res) => {
   const { orderItemID } = req.body;
 
-  const query = `
-    DELETE FROM OrderItems
-    WHERE orderItemID = ?;
-  `;
+  const query = `CALL sp_delete_orderItems(?)`;
 
   try {
     await db.query(query, [orderItemID]);
