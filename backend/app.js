@@ -4,7 +4,7 @@ const db = require('./db-connector');
 const path = require('path');
 
 const app = express();
-const PORT = 4401; 
+const PORT = 4403; 
 
 // Handlebars setup
 app.engine('hbs', exphbs.engine({

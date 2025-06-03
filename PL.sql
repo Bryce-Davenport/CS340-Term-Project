@@ -309,7 +309,7 @@ CREATE PROCEDURE sp_delete_customers(
     IN c_customerID INT
 )
 BEGIN
-    DELETE FROM Customers WHERE customerID = c_customer_id;
+    DELETE FROM Customers WHERE customerID = c_customerID;
 END //
 
 DELIMITER ;
@@ -376,7 +376,7 @@ CREATE PROCEDURE sp_update_products(
 BEGIN
     UPDATE Products
         SET price = p_newPrice
-    WHERE productID = p_product_id;
+    WHERE productID = p_productID;
 END //
 
 DELIMITER ;
@@ -551,9 +551,11 @@ CREATE PROCEDURE sp_update_orderItems(
     IN oi_newQuantity INT
 )
 BEGIN
+    SET FOREIGN_KEY_CHECKS=0;
+
     UPDATE OrderItems
-    SET Orders_orderID = oi_orderItemID, Products_productID = oi_newProductID, quantity = oi_newQuantity
-    WHERE orderItemID = oi_newOrderID;
+    SET Orders_orderID = oi_newOrderID, Products_productID = oi_newProductID, quantity = oi_newQuantity
+    WHERE orderItemID = oi_orderItemID;
 END //
 
 DELIMITER ;
