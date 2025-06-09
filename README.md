@@ -2,6 +2,14 @@
 
 This repository hosts Bryce Davenport and Jack Armstrong's CS340 Term Project: Crazy Computers
 
+### Project Citation
+- Date: 06/09/25
+- Scope: Project
+- Based on: Activity 2
+- Source URL: https://canvas.oregonstate.edu/courses/1999601/assignments/10006370?module_item_id=25352883
+
+Based on the CS340 starter code and project steps 1-5 guidelines
+
 ### File Structure:
 ```
 CS340-Term-Project/
@@ -11,6 +19,8 @@ CS340-Term-Project/
     - db.js                              
 - frontend/                     # Web UI files
     - views
+        - layouts
+            - main.hbs
         - partials
             - nav.hbs
         customers.hbs
