@@ -2,6 +2,8 @@
 
 This repository hosts Bryce Davenport and Jack Armstrong's CS340 Term Project: Crazy Computers
 
+> [!NOTE]
+> Relevant citations for files or functions are located within the codebase
 ### Project Citation
 - Date: 06/09/25
 - Scope: Project
