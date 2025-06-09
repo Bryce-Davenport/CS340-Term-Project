@@ -1,12 +1,13 @@
+/*
+    # Authors: Bryce Davenport and Jack Armstrong
+    # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
+*/
 
 -- CUSTOMERS
 -- =====================================================
 
 -- View all customers
 SELECT customerID, email, streetAddress, phoneNumber FROM Customers;
-
--- View customer by ID (TODO)
-SELECT * FROM Customers WHERE customerID = @customer_id;
 
 -- Insert a new customer
 INSERT INTO Customers (email, streetAddress, phoneNumber)
@@ -26,9 +27,6 @@ DELETE FROM Customers WHERE customerID = c_customer_id;
 
 -- View all products
 SELECT productID, manufacturer, model, productType, color, price FROM Products;
-
--- View product by ID (TODO)
-SELECT * FROM Products WHERE productID = @product_id;
 
 -- Insert a new product
 INSERT INTO Products (manufacturer, model, productType, color, price)
@@ -52,17 +50,14 @@ SELECT o.orderID, o.orderDate, o.shippingAddress, o.orderTotal,
 FROM Orders o
 JOIN Customers c ON o.Customers_customerID = c.customerID;
 
--- View all orders for a customer (TODO)
-SELECT * FROM Orders WHERE Customers_customerID = @customer_id;
-
 -- Insert a new order
 INSERT INTO Orders (orderDate, shippingAddress, orderTotal, Customers_customerID)
 VALUES (o_orderDate, o_shippingAddress, o_orderTotal, o_customerID);
 
 -- Update order date
- UPDATE Orders
- SET orderDate = o_newOrderDate
- WHERE orderID = o_orderID;
+UPDATE Orders
+SET orderDate = o_newOrderDate
+WHERE orderID = o_orderID;
 
 -- Delete an order
 DELETE FROM Orders
@@ -80,20 +75,14 @@ FROM OrderItems oi
 JOIN Orders o ON oi.Orders_orderID = o.orderID
 JOIN Products p ON oi.Products_productID = p.productID;
 
--- View all products in an order (TODO)
-SELECT p.model, p.price, oi.quantity
-FROM OrderItems oi
-JOIN Products p ON oi.Products_productID = p.productID
-WHERE oi.Orders_orderID = @order_id;
-
 -- Insert a product into orderItems
 INSERT INTO OrderItems (Orders_orderID, Products_productID, quantity)
 VALUES (oi_orderID, oi_productID, oi_quantity);
 
 -- Update quantity of product in orderItems
 UPDATE OrderItems
-SET Orders_orderID = oi_orderItemID, Products_productID = oi_newProductID, quantity = oi_newQuantity
-WHERE orderItemID = oi_newOrderID;
+SET Orders_orderID = oi_newOrderID, Products_productID = oi_newProductID, quantity = oi_newQuantity
+WHERE orderItemID = oi_orderItemID;
 
 -- Remove a product from orderItems
 DELETE FROM OrderItems

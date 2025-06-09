@@ -1,7 +1,12 @@
 /*
+    # Authors: Bryce Davenport and Jack Armstrong
+    # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
+*/
+
+/*
     # Citation for Project Step 2:
     # Date: 05/30/2025
-
+    # Scope: File
     # Based on Project Step 2 Draft instructions:
     # Source URL: https://oregonstate.instructure.com/courses/1999601/assignments/10006385?module_item_id=25352941
 
@@ -9,12 +14,7 @@
     # to ensure continutity.
 */
 
-/*
-    # Authors: Bryce Davenport and Jack Armstrong
-    # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
-*/
-
-USE cs340_armsjack; /*update here when changing DB*/
+USE cs340_username; /*update here when changing DB*/
 
 
 SET FOREIGN_KEY_CHECKS=0;

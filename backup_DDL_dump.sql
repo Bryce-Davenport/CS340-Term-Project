@@ -57,8 +57,8 @@ CREATE TABLE `OrderItems` (
   PRIMARY KEY (`orderItemID`),
   KEY `FK_OrderItems_orderID` (`Orders_orderID`),
   KEY `FK_OrderItems_productID` (`Products_productID`),
-  CONSTRAINT `FK_OrderItems_orderID` FOREIGN KEY (`Orders_orderID`) REFERENCES `Orders` (`orderID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_OrderItems_productID` FOREIGN KEY (`Products_productID`) REFERENCES `Products` (`productID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_OrderItems_orderID` FOREIGN KEY (`Orders_orderID`) REFERENCES `Orders` (`orderID`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `FK_OrderItems_productID` FOREIGN KEY (`Products_productID`) REFERENCES `Products` (`productID`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -138,4 +138,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-05-08  0:40:39
+-- Dump completed on 2025-06-08 23:37:27

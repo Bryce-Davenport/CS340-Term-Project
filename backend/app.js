@@ -6,6 +6,11 @@ const path = require('path');
 const app = express();
 const PORT = 4401; 
 
+/*
+    # Authors: Bryce Davenport and Jack Armstrong
+    # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
+*/
+
 // Handlebars setup
 app.engine('hbs', exphbs.engine({
   extname: 'hbs',
@@ -23,12 +28,12 @@ app.use(express.json());
 // Static assets (style.css at some point)
 app.use(express.static(path.join(__dirname, '../frontend')));
 
-// Routes
+// Home page route
 app.get('/', (req, res) => {
   res.render('index'); 
 });
 
-// reset route
+// Reset route
 app.post('/index/reset', async (req, res) => {
   try {
     await db.query('CALL sp_load_computerStoreDB')

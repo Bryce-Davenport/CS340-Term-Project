@@ -1,12 +1,21 @@
 /*
+    # Authors: Bryce Davenport and Jack Armstrong
+    # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
+*/
+
+/*
     # Citation for Project Step 4:
     # Date: 05/22/2025
-
+    # Scope: Function sp_load_computerStoreDB
     # Based on: PL/SQL part 2, Stored Procedures for CUD
     # Source URL: https://canvas.oregonstate.edu/courses/1999601/pages/exploration-pl-slash-sql-part-2-stored-procedures-for-cud?module_item_id=25352959
 
-    # Used the skeleton of the moviesDB to create the SP
+    # Used the skeleton of the moviesDB to create the reset DB procedure
 */
+
+-- ---------------------------------------
+-- Reset DB stored procedure
+-- ---------------------------------------
 DROP PROCEDURE IF EXISTS sp_load_computerStoreDB;
 DELIMITER //
 
