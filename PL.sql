@@ -348,10 +348,11 @@ DROP PROCEDURE IF EXISTS sp_add_products;
 
 DELIMITER //
 
--- Citation for the following code:
+-- Citation 
 -- Date: 06/01/25
+-- Scope: Function
 -- Copied from /OR/ Adapted from /OR/ Based on:
--- I used copilot to generate the IN variables
+--  I used copilot to generate the IN variables
 -- Source URL: https://copilot.microsoft.com/
 -- If AI tools were used, prompt:
 --    Please generate the IN parameters for adding a product in MySQL containing the
