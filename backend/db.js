@@ -16,9 +16,9 @@ const pool = mysql.createPool({
     waitForConnections: true,
     connectionLimit   : 10,
     host              : 'classmysql.engr.oregonstate.edu',
-    user              : 'cs340_username',
-    password          : '',
-    database          : 'cs340_username'
+    user              : 'cs340_davenpbr',
+    password          : '5120',
+    database          : 'cs340_davenpbr'
 }).promise(); 
 
 

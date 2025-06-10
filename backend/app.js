@@ -11,6 +11,17 @@ const PORT = 4401;
     # Repository: https://github.com/Bryce-Davenport/CS340-Term-Project
 */
 
+/*
+    Citation:
+    Date: 05/26/2025
+    Scope: Lines 46-295
+    Based on Project Step 3 Draft instructions:
+    Source URL: https://chatgpt.com
+    ** ChatGPT was NOT used to create the routes in this file, rather it was used to debug logical mishaps and syntax
+
+    AI Prompt: Example: "I am seeing error output X when attempting operation X, verify that the route is properly written and correctly matches the desired file paths"
+*/
+
 // Handlebars setup
 app.engine('hbs', exphbs.engine({
   extname: 'hbs',
