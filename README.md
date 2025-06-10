@@ -42,7 +42,7 @@ CS340-Term-Project/
 ## Diagrams
 
 ### ERD:
-![Simple ERD Diagram](/Diagrams/PS2_ERD.png)
+![Simple ERD Diagram](/Diagrams/ERD.png)
 
 ### Schema:
-![Database Schema](/Diagrams/PS3_Schema.png)
+![Database Schema](/Diagrams/Schema.png)
